@@ -22,8 +22,10 @@ import org.apache.commons.logging.LogFactory;
 import org.demo.loan.ApplicationStatus;
 import org.demo.loan.bean.ApplicationBean;
 import org.demo.loan.dao.LoanApplicationDAO;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -42,6 +44,20 @@ import javax.ws.rs.core.Response;
 public class LoanService {
 
     private static Log LOGGER = LogFactory.getLog(LoanService.class);
+
+    @GET
+    @Path("/")
+    public Response getAllLoanApplication() {
+
+        LOGGER.info("Get all loan application invoked");
+        LoanApplicationDAO applicationDAO = new LoanApplicationDAO();
+        List<ApplicationBean> applicationBeanList = applicationDAO.getAllLaonApplications();
+
+        JSONArray jsonArray = new JSONArray(applicationBeanList.toArray());
+        JSONObject returnObject = new JSONObject();
+        returnObject.put("applications", jsonArray);
+        return Response.status(Response.Status.OK).entity(returnObject.toString()).build();
+    }
 
     @GET
     @Path("/status/{referenceNumber}")

@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class LoanApplicationDAO {
 
@@ -81,6 +83,39 @@ public class LoanApplicationDAO {
             DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
         }
         return id;
+    }
+
+    /**
+     * Get all loan applications
+     * @return Application list
+     */
+    public List<ApplicationBean> getAllLaonApplications() {
+        Connection dbConnection = null;
+        PreparedStatement prepStmt = null;
+        ResultSet resultSet = null;
+        List<ApplicationBean> applicationBeanList = new ArrayList<>();
+        try {
+            dbConnection = DatabaseUtil.getDBConnection();
+            prepStmt = dbConnection.prepareStatement(SQLQueries.QUERY_GET_ALL_APPLICATION);
+            resultSet = prepStmt.executeQuery();
+            while (resultSet.next()) {
+                ApplicationBean applicationBean = new ApplicationBean();
+                applicationBean.setAmount(resultSet.getDouble("AMOUNT"));
+                applicationBean.setCustomerId(resultSet.getString("CUSTOMER_ID"));
+                applicationBean.setId(resultSet.getInt("ID"));
+                applicationBean.setPeriod(resultSet.getDouble("PERIOD"));
+                applicationBean.setReferenceNo(resultSet.getString("REFERENCE_NO"));
+                applicationBean.setType(resultSet.getString("TYPE"));
+                applicationBean.setStatus(resultSet.getString("STATUS"));
+                applicationBeanList.add(applicationBean);
+            }
+        } catch (SQLException e) {
+            String errorMessage = "Error occurred while getting all loan applications";
+            LOGGER.error(errorMessage, e);
+        } finally {
+            DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
+        }
+        return applicationBeanList;
     }
 
     /**

@@ -8,6 +8,7 @@ public class ApplicationBean {
     private String type;
     private double amount;
     private double period;
+    private String status;
 
     public double getAmount() {
         return amount;
@@ -55,5 +56,13 @@ public class ApplicationBean {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

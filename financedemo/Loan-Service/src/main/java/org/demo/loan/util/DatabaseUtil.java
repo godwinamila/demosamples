@@ -49,31 +49,31 @@ public class DatabaseUtil {
      */
     private static DataSource loadUserStoreSpacificDataSoruce() {
 
-//        String jdbcdriver = System.getenv("jdbcdriver");
-//        String jdbcurl = System.getenv("jdbcurl");
-//        String dbuser = System.getenv("dbuser");
-//        String dbpassword = System.getenv("dbpassword");
-//
-//        LOGGER.info("jdbcdriver : " + jdbcdriver);
-//        LOGGER.info("jdbcurl : " + jdbcurl);
-//        LOGGER.info("dbuser : " + dbuser);
-//        LOGGER.info("dbpassword : " + dbpassword);
-//
-//        PoolProperties poolProperties = new PoolProperties();
-//        poolProperties.setDriverClassName(jdbcdriver);
-//        poolProperties.setUrl(jdbcurl);
-//        poolProperties.setUsername(dbuser);
-//        poolProperties.setPassword(dbpassword);
-//        poolProperties.setTestOnBorrow(true);
-//        poolProperties.setValidationQuery("SELECT 1");
+        String jdbcdriver = System.getenv("jdbcdriver");
+        String jdbcurl = System.getenv("jdbcurl");
+        String dbuser = System.getenv("dbuser");
+        String dbpassword = System.getenv("dbpassword");
+
+        LOGGER.info("jdbcdriver : " + jdbcdriver);
+        LOGGER.info("jdbcurl : " + jdbcurl);
+        LOGGER.info("dbuser : " + dbuser);
+        LOGGER.info("dbpassword : " + dbpassword);
 
         PoolProperties poolProperties = new PoolProperties();
-        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
-        poolProperties.setUrl("jdbc:mysql://localhost:3306/loandb");
-        poolProperties.setUsername("root");
-        poolProperties.setPassword("root");
+        poolProperties.setDriverClassName(jdbcdriver);
+        poolProperties.setUrl(jdbcurl);
+        poolProperties.setUsername(dbuser);
+        poolProperties.setPassword(dbpassword);
         poolProperties.setTestOnBorrow(true);
         poolProperties.setValidationQuery("SELECT 1");
+
+//        PoolProperties poolProperties = new PoolProperties();
+//        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
+//        poolProperties.setUrl("jdbc:mysql://localhost:3306/loandb");
+//        poolProperties.setUsername("root");
+//        poolProperties.setPassword("root");
+//        poolProperties.setTestOnBorrow(true);
+//        poolProperties.setValidationQuery("SELECT 1");
 
         return new org.apache.tomcat.jdbc.pool.DataSource(poolProperties);
     }

@@ -54,6 +54,7 @@ public class CustomerService {
             returnObject.put("addrress", customerBean.getAddress());
             returnObject.put("state", customerBean.getState());
             returnObject.put("postalcode", customerBean.getPostalcode());
+            //returnObject.put("country", customerBean.getCountry());
             return Response.status(Response.Status.OK).entity(returnObject.toString()).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("").build();

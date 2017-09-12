@@ -8,6 +8,8 @@ public class CustomerBean {
     private String address;
     private String state;
     private String postalcode;
+    private String country;
+
 
     public String getId() {
         return id;
@@ -55,5 +57,13 @@ public class CustomerBean {
 
     public void setPostalcode(String postalcode) {
         this.postalcode = postalcode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

@@ -5,16 +5,28 @@ import ballerina.lang.system;
 @http:configuration {basePath:"/loanservice"}
 service<http> loanProcessService {
 
+
+   @http:resourceConfig {
+        methods:["GET"],
+        path:"/"
+    }
+    resource getAllResource (message m) {
+
+        system:println("Get All Loan application resource invoked");
+        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://fintechdemo-loanservice.wso2apps.com/loanservice");
+        message response = {};
+        response = loanserviceEP.get("/", m);
+        reply response;
+    }	
+
     @http:resourceConfig {
         methods:["GET"],
         path:"/status/{referencenumber}"
     }
     resource statusResource (message m, @http:PathParam {value:"referencenumber"} string referencenumber) {
 
-        system:println("Loan application approve resource invoked : " + referencenumber);
-        //http:ClientConnector loanserviceEP = create http:ClientConnector ("http://localhost:8080/loanservice");
-        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://financedemo-loanservice-1-0-0.wso2apps.com/loanservice");
-
+        system:println("Loan application status resource invoked : " + referencenumber);
+        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://fintechdemo-loanservice.wso2apps.com/loanservice");
         message response = {};
         response = loanserviceEP.get("/status/" + referencenumber, m);
         reply response;
@@ -26,13 +38,9 @@ service<http> loanProcessService {
     }
     resource createResource (message m) {
         system:println("Loan application create resource invoked.");
-        // http:ClientConnector customerserviceEP = create http:ClientConnector ("http://localhost:8080/customerservice");
-        // http:ClientConnector creditserviceEP = create http:ClientConnector ("http://localhost:8080/creditservice");
-        // http:ClientConnector loanserviceEP = create http:ClientConnector ("http://localhost:8080/loanservice");
-
-        http:ClientConnector customerserviceEP = create http:ClientConnector ("http://financedemo-customerservice-1-0-0.wso2apps.com/customerservice");
-        http:ClientConnector creditserviceEP = create http:ClientConnector ("http://financedemo-creditservice-1-0-0.wso2apps.com/creditservice");
-        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://financedemo-loanservice-1-0-0.wso2apps.com/loanservice");
+        http:ClientConnector customerserviceEP = create http:ClientConnector ("http://fintechdemo-customerservice.wso2apps.com/customerservice");
+        http:ClientConnector creditserviceEP = create http:ClientConnector ("http://fintechdemo-creditservice.wso2apps.com/creditservice");
+        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://fintechdemo-loanservice.wso2apps.com/loanservice");
 
 
         json jsonMsg = messages:getJsonPayload(m);
@@ -94,8 +102,7 @@ service<http> loanProcessService {
     resource approveResource (message m, @http:PathParam {value:"referencenumber"} string referencenumber) {
 
         system:println("Loan application approve resource invoked : " + referencenumber);
-        //http:ClientConnector loanserviceEP = create http:ClientConnector ("http://localhost:8080/loanservice");
-        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://financedemo-loanservice-1-0-0.wso2apps.com/loanservice");
+        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://fintechdemo-loanservice.wso2apps.com/loanservice");
 
         message response = {};
         response = loanserviceEP.post("/approve/" + referencenumber, m);
@@ -108,13 +115,12 @@ service<http> loanProcessService {
     }
     resource rejectResource (message m, @http:PathParam {value:"referencenumber"} string referencenumber) {
 
-        system:println("Loan application reject resource invoked.");
-        //http:ClientConnector loanserviceEP = create http:ClientConnector ("http://localhost:8080/loanservice");
-        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://financedemo-loanservice-1-0-0.wso2apps.com/loanservice");
+	system:println("Loan application reject resource invoked : " + referencenumber);
+        http:ClientConnector loanserviceEP = create http:ClientConnector ("http://fintechdemo-loanservice.wso2apps.com/loanservice");
 
         message response = {};
         response = loanserviceEP.post("/reject/" + referencenumber, m);
         reply response;
     }
-
 }
+

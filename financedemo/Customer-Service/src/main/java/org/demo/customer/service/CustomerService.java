@@ -16,6 +16,14 @@
 
 package org.demo.customer.service;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.License;
+import io.swagger.annotations.SwaggerDefinition;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.demo.customer.bean.CustomerBean;
@@ -25,6 +33,8 @@ import org.json.JSONObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -34,13 +44,29 @@ import javax.ws.rs.core.Response;
  *
  * @since 0.1-SNAPSHOT
  */
+@Api(value = "customerservice")
+@SwaggerDefinition(
+        info = @Info(
+                title = "Customer service Swagger Definition", version = "1.0",
+                description = "The endpoint which is used to manage Customer",
+                license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0")
+        )
+)
 @Path("/customerservice")
 public class CustomerService {
 
     private static Log LOGGER = LogFactory.getLog(CustomerService.class);
     @GET
     @Path("/{id}")
-    public Response getCustomer(@PathParam("id") String id) {
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+            value = "Return customer details for the give id ",
+            notes = "Returns HTTP 404 if customer doesn't exist")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "{id:808812,firstname:Johan,..}"),
+            @ApiResponse(code = 404, message = "Particular exception message")})
+    public Response getCustomer(@ApiParam(value = "id", required = true)
+                                @PathParam("id") String id) {
 
         LOGGER.info("Get customer invoked.");
         CustomerDAO customerDAO = new CustomerDAO();

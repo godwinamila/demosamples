@@ -16,7 +16,14 @@
 
 package org.demo.loan.service;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.License;
+import io.swagger.annotations.SwaggerDefinition;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.demo.loan.ApplicationStatus;
@@ -31,6 +38,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -40,6 +49,14 @@ import javax.ws.rs.core.Response;
  *
  * @since 0.1-SNAPSHOT
  */
+@Api(value = "loanservice")
+@SwaggerDefinition(
+        info = @Info(
+                title = "Loan service Swagger Definition", version = "1.0",
+                description = "The endpoint which is used to manage loan application",
+                license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0")
+        )
+)
 @Path("/loanservice")
 public class LoanService {
 
@@ -47,6 +64,14 @@ public class LoanService {
 
     @GET
     @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+            value = "Return all the loan applications. ",
+            notes = "Returns HTTP 500 if an internal error occurs at the server")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,
+                    message = "{\"applications\":[{att1name:att1val,att2name:att2name},{att1name:att1val,att2name:att2name}]}"),
+            @ApiResponse(code = 500, message = "Particular exception message") })
     public Response getAllLoanApplication() {
 
         LOGGER.info("Get all loan application invoked");
@@ -61,7 +86,14 @@ public class LoanService {
 
     @GET
     @Path("/status/{referenceNumber}")
-    public Response status(@PathParam("referenceNumber") String referenceNumber) {
+    @ApiOperation(
+            value = "Return Laon application status for the reference number. ",
+            notes = "Returns HTTP 404 if user doesn't exist")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "{status:NEW}"),
+            @ApiResponse(code = 404, message = "Particular exception message")})
+    public Response status(@ApiParam(value = "referenceNumber", required = true)
+                           @PathParam("referenceNumber") String referenceNumber) {
 
         LOGGER.info("Get loan status invoked for reference number : " + referenceNumber);
         LoanApplicationDAO applicationDAO = new LoanApplicationDAO();
@@ -77,7 +109,14 @@ public class LoanService {
 
     @POST
     @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/")
+    @ApiOperation(
+            value = "Create loan application and return loan reference number. ",
+            notes = "Returns HTTP 404 if user doesn't exist")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "{referencenumber:HOU2017000012}"),
+            @ApiResponse(code = 404, message = "Particular exception message")})
     public Response create(@ApiParam(value = "Application object", required = true) ApplicationBean application) {
 
         LOGGER.info("Application creation invoked.");
@@ -96,7 +135,14 @@ public class LoanService {
 
     @POST
     @Path("/approve/{referenceNumber}")
-    public Response approve(@PathParam("referenceNumber") String referenceNumber) {
+    @ApiOperation(
+            value = "Approve loan application.",
+            notes = "Returns HTTP 404 if loan application doesn't exist")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = "")})
+    public Response approve(@ApiParam(value = "referenceNumber", required = true)
+                            @PathParam("referenceNumber") String referenceNumber) {
 
         LOGGER.info("Application approve invoked for reference number : " + referenceNumber);
         LoanApplicationDAO applicationDAO = new LoanApplicationDAO();
@@ -111,7 +157,14 @@ public class LoanService {
 
     @POST
     @Path("/reject/{referenceNumber}")
-    public Response reject(@PathParam("referenceNumber") String referenceNumber) {
+    @ApiOperation(
+            value = "Reject loan application.",
+            notes = "Returns HTTP 404 if loan application doesn't exist")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = "")})
+    public Response reject(@ApiParam(value = "referenceNumber", required = true)
+                           @PathParam("referenceNumber") String referenceNumber) {
 
         LOGGER.info("Application reject invoked for reference number : " + referenceNumber);
         LoanApplicationDAO applicationDAO = new LoanApplicationDAO();

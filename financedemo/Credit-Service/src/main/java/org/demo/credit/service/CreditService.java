@@ -16,6 +16,14 @@
 
 package org.demo.credit.service;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.License;
+import io.swagger.annotations.SwaggerDefinition;
 import org.demo.credit.dao.CreditDAO;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -34,6 +42,14 @@ import javax.ws.rs.core.Response;
  *
  * @since 0.1-SNAPSHOT
  */
+@Api(value = "creditservice")
+@SwaggerDefinition(
+        info = @Info(
+                title = "Credit service Swagger Definition", version = "1.0",
+                description = "The endpoint which is used to manage credit of a user",
+                license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0")
+        )
+)
 @Path("/creditservice")
 public class CreditService {
 
@@ -41,7 +57,14 @@ public class CreditService {
 
     @GET
     @Path("/{id}")
-    public Response getOutstandingBalance(@PathParam("id") String id) {
+    @ApiOperation(
+            value = "Return Outstanding balance of customer. ",
+            notes = "Returns HTTP 500 if any internal error")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "{outstandingbalance:200.00}"),
+            @ApiResponse(code = 500, message = "Particular exception message")})
+    public Response getOutstandingBalance(@ApiParam(value = "id", required = true)
+                                          @PathParam("id") String id) {
 
         LOGGER.info("getOutstandingBalance invoked.");
         CreditDAO creditDAO = new CreditDAO();

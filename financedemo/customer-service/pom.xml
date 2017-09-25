@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2017, WSO2 Inc. (http://wso2.com) All Rights Reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -27,9 +27,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.demo.customer</groupId>
-    <artifactId>Customer-Service</artifactId>
+    <artifactId>customer-service</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <name>WSO2 MSF4J Microservice</name>
+    <name>Customer Service</name>
 
 
     <dependencies>
@@ -38,7 +38,6 @@
             <artifactId>json</artifactId>
             <version>${org.json.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
@@ -51,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>org.demo.loan.security</groupId>
-            <artifactId>jwtsecurity</artifactId>
+            <artifactId>jwt-security</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
@@ -62,5 +61,4 @@
         <tomcat-jdbc-version>8.5.11</tomcat-jdbc-version>
         <mysql-connector-version>5.1.6</mysql-connector-version>
     </properties>
-
 </project>

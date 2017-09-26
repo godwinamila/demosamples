@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class CustomerDAO {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomerDAO.class);
 
     /**
      * Get Customer details
@@ -42,7 +42,7 @@ public class CustomerDAO {
             }
         } catch (SQLException e) {
             String errorMessage = "Error occurred while getting customer information";
-            LOGGER.error(errorMessage, e);
+            logger.error(errorMessage, e);
         } finally {
             DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
         }

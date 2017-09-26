@@ -17,7 +17,7 @@ import java.util.List;
 
 public class LoanApplicationDAO {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoanApplicationDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoanApplicationDAO.class);
 
     /**
      * Create application
@@ -45,10 +45,10 @@ public class LoanApplicationDAO {
             try {
                 dbConnection.rollback();
             } catch (SQLException e1) {
-                LOGGER.error("Error occurred while rolling back application create transaction");
+                logger.error("Error occurred while rolling back application create transaction");
             }
             String errorMessage = "Error occurred while creating application";
-            LOGGER.error(errorMessage, e);
+            logger.error(errorMessage, e);
         } finally {
             DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
         }
@@ -78,7 +78,7 @@ public class LoanApplicationDAO {
             }
         } catch (SQLException e) {
             String errorMessage = "Error occurred while checking max application id";
-            LOGGER.error(errorMessage, e);
+            logger.error(errorMessage, e);
         } finally {
             DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
         }
@@ -111,7 +111,7 @@ public class LoanApplicationDAO {
             }
         } catch (SQLException e) {
             String errorMessage = "Error occurred while getting all loan applications";
-            LOGGER.error(errorMessage, e);
+            logger.error(errorMessage, e);
         } finally {
             DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
         }
@@ -138,7 +138,7 @@ public class LoanApplicationDAO {
             }
         } catch (SQLException e) {
             String errorMessage = "Error occurred while checking application status";
-            LOGGER.error(errorMessage, e);
+            logger.error(errorMessage, e);
         } finally {
             DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
         }
@@ -167,10 +167,10 @@ public class LoanApplicationDAO {
             try {
                 dbConnection.rollback();
             } catch (SQLException e1) {
-                LOGGER.error("Error occurred while rolling back application status update");
+                logger.error("Error occurred while rolling back application status update");
             }
             String errorMessage = "Error occurred while updating application status";
-            LOGGER.error(errorMessage, e);
+            logger.error(errorMessage, e);
         } finally {
             DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
         }

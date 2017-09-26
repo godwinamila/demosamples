@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class CreditDAO {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreditDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreditDAO.class);
 
     /**
      * Get customer's outstnading balance
@@ -35,7 +35,7 @@ public class CreditDAO {
             return outstandingBalance;
         } catch (SQLException e) {
             String errorMessage = "Error occurred while getting customer outstanding balance";
-            LOGGER.error(errorMessage, e);
+            logger.error(errorMessage, e);
         } finally {
             DatabaseUtil.closeAllConnections(dbConnection, resultSet, prepStmt);
         }

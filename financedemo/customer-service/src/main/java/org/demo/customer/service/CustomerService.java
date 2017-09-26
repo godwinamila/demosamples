@@ -55,7 +55,7 @@ import javax.ws.rs.core.Response;
 @Path("/customerservice")
 public class CustomerService {
 
-    private static Log LOGGER = LogFactory.getLog(CustomerService.class);
+    private static Log logger = LogFactory.getLog(CustomerService.class);
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,7 +68,7 @@ public class CustomerService {
     public Response getCustomer(@ApiParam(value = "id", required = true)
                                 @PathParam("id") String id) {
 
-        LOGGER.info("Get customer invoked.");
+        logger.info("Get customer invoked.");
         CustomerDAO customerDAO = new CustomerDAO();
         CustomerBean customerBean = customerDAO.getCustomer(id);
 
@@ -86,5 +86,4 @@ public class CustomerService {
             return Response.status(Response.Status.NOT_FOUND).entity("").build();
         }
     }
-
 }

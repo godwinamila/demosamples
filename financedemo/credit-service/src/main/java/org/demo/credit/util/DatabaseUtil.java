@@ -4,18 +4,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.sql.DataSource;
 
 /**
  * Database utility
  */
 public class DatabaseUtil {
 
-    private static Log LOGGER = LogFactory.getLog(DatabaseUtil.class);
+    private static Log logger = LogFactory.getLog(DatabaseUtil.class);
     private static DataSource jdbcds = loadUserStoreSpacificDataSoruce();
 
     /**
@@ -48,15 +48,15 @@ public class DatabaseUtil {
      * @return datasource
      */
     private static DataSource loadUserStoreSpacificDataSoruce() {
-        String jdbcdriver = System.getenv("jdbcdriver");
-        String jdbcurl = System.getenv("jdbcurl");
-        String dbuser = System.getenv("dbuser");
-        String dbpassword = System.getenv("dbpassword");
+        String jdbcdriver = System.getenv("JDBC_DRIVER");
+        String jdbcurl = System.getenv("JDBC_URL");
+        String dbuser = System.getenv("DB_USER");
+        String dbpassword = System.getenv("DB_PASSWORD");
 
-        LOGGER.info("jdbcdriver : " + jdbcdriver);
-        LOGGER.info("jdbcurl : " + jdbcurl);
-        LOGGER.info("dbuser : " + dbuser);
-        LOGGER.info("dbpassword : " + dbpassword);
+        logger.info("jdbcdriver: " + jdbcdriver);
+        logger.info("jdbcurl: " + jdbcurl);
+        logger.info("dbuser: " + dbuser);
+        logger.info("dbpassword: " + dbpassword);
 
         PoolProperties poolProperties = new PoolProperties();
         poolProperties.setDriverClassName(jdbcdriver);
@@ -87,7 +87,7 @@ public class DatabaseUtil {
             try {
                 dbConnection.close();
             } catch (SQLException e) {
-                LOGGER.error("Database error. Could not close statement. Continuing with others. - " + e.getMessage(),
+                logger.error("Database error. Could not close statement. Continuing with others. - " + e.getMessage(),
                         e);
             }
         }
@@ -103,7 +103,7 @@ public class DatabaseUtil {
             try {
                 rs.close();
             } catch (SQLException e) {
-                LOGGER.error("Database error. Could not close result set  - " + e.getMessage(), e);
+                logger.error("Database error. Could not close result set  - " + e.getMessage(), e);
             }
         }
     }
@@ -118,7 +118,7 @@ public class DatabaseUtil {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
-                LOGGER.error("Database error. Could not close statement. Continuing with others. - " + e.getMessage(),
+                logger.error("Database error. Could not close statement. Continuing with others. - " + e.getMessage(),
                         e);
             }
         }
@@ -168,5 +168,4 @@ public class DatabaseUtil {
         closeStatements(prepStmts);
         closeConnection(dbConnection);
     }
-
 }

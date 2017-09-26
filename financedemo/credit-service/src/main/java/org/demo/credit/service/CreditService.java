@@ -29,7 +29,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -53,7 +52,7 @@ import javax.ws.rs.core.Response;
 @Path("/creditservice")
 public class CreditService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreditService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreditService.class);
 
     @GET
     @Path("/{id}")
@@ -66,15 +65,14 @@ public class CreditService {
     public Response getOutstandingBalance(@ApiParam(value = "id", required = true)
                                           @PathParam("id") String id) {
 
-        LOGGER.info("getOutstandingBalance invoked.");
+        logger.info("getOutstandingBalance invoked.");
         CreditDAO creditDAO = new CreditDAO();
         double totalOutstandingBalance = creditDAO.getCustomerOutstandingBalance(id);
 
         JSONObject returnObject = new JSONObject();
-        LOGGER.info("OutstandingBalance : " + totalOutstandingBalance);
+        logger.info("OutstandingBalance: " + totalOutstandingBalance);
         returnObject.put("outstandingbalance", totalOutstandingBalance);
         return Response.status(Response.Status.OK).entity(returnObject.toString()).build();
     }
-
 }
 

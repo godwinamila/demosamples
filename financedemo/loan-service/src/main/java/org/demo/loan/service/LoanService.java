@@ -60,7 +60,7 @@ import javax.ws.rs.core.Response;
 @Path("/loanservice")
 public class LoanService {
 
-    private static Log LOGGER = LogFactory.getLog(LoanService.class);
+    private static Log logger = LogFactory.getLog(LoanService.class);
 
     @GET
     @Path("/")
@@ -74,7 +74,7 @@ public class LoanService {
             @ApiResponse(code = 500, message = "Particular exception message") })
     public Response getAllLoanApplication() {
 
-        LOGGER.info("Get all loan application invoked");
+        logger.info("Get all loan application invoked");
         LoanApplicationDAO applicationDAO = new LoanApplicationDAO();
         List<ApplicationBean> applicationBeanList = applicationDAO.getAllLaonApplications();
 
@@ -95,7 +95,7 @@ public class LoanService {
     public Response status(@ApiParam(value = "referenceNumber", required = true)
                            @PathParam("referenceNumber") String referenceNumber) {
 
-        LOGGER.info("Get loan status invoked for reference number : " + referenceNumber);
+        logger.info("Get loan status invoked for reference number: " + referenceNumber);
         LoanApplicationDAO applicationDAO = new LoanApplicationDAO();
         String status = applicationDAO.getApplicationStatus(referenceNumber);
         JSONObject returnObject = new JSONObject();
@@ -119,7 +119,7 @@ public class LoanService {
             @ApiResponse(code = 404, message = "Particular exception message")})
     public Response create(@ApiParam(value = "Application object", required = true) ApplicationBean application) {
 
-        LOGGER.info("Application creation invoked.");
+        logger.info("Application creation invoked.");
         LoanApplicationDAO applicationDAO = new LoanApplicationDAO();
         String referenceNumber = applicationDAO.createApplication(application);
         JSONObject returnObject = new JSONObject();
@@ -144,7 +144,7 @@ public class LoanService {
     public Response approve(@ApiParam(value = "referenceNumber", required = true)
                             @PathParam("referenceNumber") String referenceNumber) {
 
-        LOGGER.info("Application approve invoked for reference number : " + referenceNumber);
+        logger.info("Application approve invoked for reference number: " + referenceNumber);
         LoanApplicationDAO applicationDAO = new LoanApplicationDAO();
         boolean status = applicationDAO.UpdateStatus(referenceNumber, ApplicationStatus.APPROVED.toString());
 
@@ -166,7 +166,7 @@ public class LoanService {
     public Response reject(@ApiParam(value = "referenceNumber", required = true)
                            @PathParam("referenceNumber") String referenceNumber) {
 
-        LOGGER.info("Application reject invoked for reference number : " + referenceNumber);
+        logger.info("Application reject invoked for reference number: " + referenceNumber);
         LoanApplicationDAO applicationDAO = new LoanApplicationDAO();
         boolean status = applicationDAO.UpdateStatus(referenceNumber, ApplicationStatus.REJECTED.toString());
 

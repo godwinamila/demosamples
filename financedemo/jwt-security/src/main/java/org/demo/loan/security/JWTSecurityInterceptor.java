@@ -20,13 +20,13 @@ import java.util.Map;
  */
 public class JWTSecurityInterceptor implements Interceptor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JWTSecurityInterceptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(JWTSecurityInterceptor.class);
     private static final String AUTHORIZATION_HTTP_HEADER = "X-JWT-Assertion";
 
     private static final Base64 base64Url = new Base64(true);
     private static final String TRUST_STORE = "/client-truststore.jks";
     private static final String TRUST_STORE_PASSWORD = "wso2carbon";
-    private static final String ALIAS = "fintechdemo";
+    private static final String ALIAS = "wso2carbon";
     private static final String SWAGGER_CONTEXT = "/swagger";
     private JSONObject jsonHeaderObject;
     private JSONObject jsonClaimObject;
@@ -38,7 +38,7 @@ public class JWTSecurityInterceptor implements Interceptor {
         String requestURI = request.getUri();
 
         if (requestURI.startsWith(SWAGGER_CONTEXT)) {
-            LOGGER.debug(String.format("Skipping '%s' as it is an open resource.", requestURI));
+            logger.debug(String.format("Skipping '%s' as it is an open resource.", requestURI));
             return true;
         }
 
@@ -46,17 +46,17 @@ public class JWTSecurityInterceptor implements Interceptor {
 
         if (headers != null && headers.containsKey(AUTHORIZATION_HTTP_HEADER)) {
             String authHeader = headers.get(AUTHORIZATION_HTTP_HEADER);
-            LOGGER.info("authHeader : " + authHeader);
+            logger.info("Auth header: " + authHeader);
 
             if (isValid(authHeader)) {
                 return true;
             } else {
-                LOGGER.debug(String.format("Can't allow accessing '%s' since the JWT is not valid.", requestURI));
+                logger.error(String.format("JWT token is not valid: [resource] %s", requestURI));
                 respondWith401(responder);
                 return false;
             }
         } else {
-            LOGGER.error(String.format("Authorization header is missing in the request for '%s'.", requestURI));
+            logger.error(String.format("Authorization header is missing in the request for '%s'.", requestURI));
             respondWith401(responder);
             return false;
         }
@@ -69,7 +69,6 @@ public class JWTSecurityInterceptor implements Interceptor {
     }
 
     protected boolean isValid(String jwtToken) {
-
         String[] jwtTokenValues = jwtToken.split("\\.");
         String jwtAssertion = null;
         byte[] jwtSignature = null;
@@ -80,12 +79,11 @@ public class JWTSecurityInterceptor implements Interceptor {
             try {
                 jsonHeaderObject = (JSONObject) parser.parse(value);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Could not parse JWT token", e);
             }
         }
 
         if (jwtTokenValues.length > 1) {
-
             String value = new String(base64Url.decode(jwtTokenValues[1].getBytes()));
             jwtAssertion = jwtTokenValues[0] + "." + jwtTokenValues[1];
 
@@ -93,7 +91,7 @@ public class JWTSecurityInterceptor implements Interceptor {
             try {
                 jsonClaimObject = (JSONObject) parser.parse(value);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Could not parse JWT token", e);
             }
         }
 
@@ -123,22 +121,24 @@ public class JWTSecurityInterceptor implements Interceptor {
                 keyStore.load(getClass().getResourceAsStream(TRUST_STORE), TRUST_STORE_PASSWORD.toCharArray());
                 //String alias = getAliasForX509CertThumb(thumbPrint.getBytes(), keyStore);
                 Certificate certificate = keyStore.getCertificate(ALIAS);
+                if(certificate == null) {
+                    throw new RuntimeException("Certificate with alias " + ALIAS + " not found in keystore");
+                }
                 Signature signature = Signature.getInstance(signatureAlgo);
                 signature.initVerify(certificate);
                 signature.update(jwtAssertion.getBytes());
                 return signature.verify(jwtSignature);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Could not verify JWT token", e);
             }
         } else {
-            System.err.println("Signature is null");
+            logger.error("Signature is null");
         }
         return false;
 
     }
 
     private String hexify(byte bytes[]) {
-
         char[] hexDigits =
                 { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
                         'e', 'f' };
@@ -149,12 +149,10 @@ public class JWTSecurityInterceptor implements Interceptor {
             buf.append(hexDigits[(aByte & 0xf0) >> 4]);
             buf.append(hexDigits[aByte & 0x0f]);
         }
-
         return buf.toString();
     }
 
     @Override
     public void postCall(Request request, int status, ServiceMethodInfo serviceMethodInfo) {
-
     }
 }

@@ -25,7 +25,7 @@ service<http> loanProcessService {
     }
     resource statusResource (message m, @http:PathParam {value:"referencenumber"} string referencenumber) {
 
-        system:println("Loan application status resource invoked : " + referencenumber);
+        system:println("Loan application status resource invoked: " + referencenumber);
         http:ClientConnector loanserviceEP = create http:ClientConnector ("http://fintechdemo-loanservice.wso2apps.com/loanservice");
         message response = {};
         response = loanserviceEP.get("/status/" + referencenumber, m);
@@ -65,7 +65,7 @@ service<http> loanProcessService {
             system:println("Invalid user.");
             reply response;
         }
-        system:println("Valid customer found : " + customerId);
+        system:println("Valid customer found: " + customerId);
 
         response = creditserviceEP.get("/82781212", m);
         statuscode = http:getStatusCode(response);
@@ -101,7 +101,7 @@ service<http> loanProcessService {
     }
     resource approveResource (message m, @http:PathParam {value:"referencenumber"} string referencenumber) {
 
-        system:println("Loan application approve resource invoked : " + referencenumber);
+        system:println("Loan application approve resource invoked: " + referencenumber);
         http:ClientConnector loanserviceEP = create http:ClientConnector ("http://fintechdemo-loanservice.wso2apps.com/loanservice");
 
         message response = {};
@@ -115,7 +115,7 @@ service<http> loanProcessService {
     }
     resource rejectResource (message m, @http:PathParam {value:"referencenumber"} string referencenumber) {
 
-	system:println("Loan application reject resource invoked : " + referencenumber);
+	system:println("Loan application reject resource invoked: " + referencenumber);
         http:ClientConnector loanserviceEP = create http:ClientConnector ("http://fintechdemo-loanservice.wso2apps.com/loanservice");
 
         message response = {};

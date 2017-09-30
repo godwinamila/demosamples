@@ -11,10 +11,11 @@ import java.io.IOException;
 
 public class AccessTokenUtility {
 
+    private final static String TOKEN_ENDPOINT = "https://192.168.99.1:8243/token";
     public String getAccessToken(String clientId, String secret) throws IOException {
 
         HttpClient httpClient = getHttpClient();
-        PostMethod postRequest = new PostMethod("https://192.168.99.1:8243/token");
+        PostMethod postRequest = new PostMethod(TOKEN_ENDPOINT);
         postRequest.addParameter("grant_type", "client_credentials");
 
         String clientidsecret = clientId + ":" + secret;
